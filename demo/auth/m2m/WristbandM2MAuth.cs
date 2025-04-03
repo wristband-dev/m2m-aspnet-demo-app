@@ -55,11 +55,22 @@ public class WristbandM2MAuth : IWristbandM2MAuth
     // Background task that periodically refreshes the token, if configured.
     private readonly Task? _backgroundRefreshTask;
 
-    public WristbandM2MAuth(IOptions<WristbandM2MAuthOptions> options)
+    /// <summary>
+    /// Initializes a new instance of the WristbandM2MAuth class with the specified options.
+    /// Sets up HTTP client with authentication headers and starts a background token refresh task, if configured.
+    /// </summary>
+    /// <param name="options">The options for configuring the Wristband M2M authentication service.</param>
+    /// <param name="httpClientFactory">Optional external HTTP client factory. If not provided, an internal factory will be used.</param>
+    /// <exception cref="ArgumentNullException">Thrown when options is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when required options are missing or invalid.</exception>
+    public WristbandM2MAuth(IOptions<WristbandM2MAuthOptions> options, IHttpClientFactory? httpClientFactory = null)
     {
-        // Validate
+        // Validate configuration options.
         _options = options.Value ?? throw new ArgumentNullException(nameof(options));
         ValidateOptions(_options);
+
+        // Use the provided factory, or fall back to internal one otherwise.
+        var factory = httpClientFactory ?? _factory.Value;
 
         // Use Http client factory to create a token endpoint client
         _tokenClient = _factory.Value.CreateClient("WristbandM2MAuth");
