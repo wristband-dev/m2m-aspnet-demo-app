@@ -5,9 +5,9 @@ using Wristband.AspNet.Auth.M2M;
 public class ProtectedApiClient
 {
     private readonly HttpClient _client;
-    private readonly IWristbandM2MAuth _wristbandM2MAuth;
+    private readonly IWristbandM2MAuthService _wristbandM2MAuth;
 
-    public ProtectedApiClient(HttpClient client, IWristbandM2MAuth wristbandM2MAuth)
+    public ProtectedApiClient(HttpClient client, IWristbandM2MAuthService wristbandM2MAuth)
     {
         // Protected API Client
         _client = client;

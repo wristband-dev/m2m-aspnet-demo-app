@@ -140,7 +140,11 @@ This endpoint is the downstream API called by the public data API, and it cannot
 
 ## Getting New Access Tokens
 
-An instance of `WristbandM2MAuth` is injecteded into the `ProtectedApiClient`, which the Public API uses for making requests to the Protected API.  With each request made to the Protected API, the code logic uses `WristbandM2MAuth` to get the access from the local memory cache as long as it exists and is not expired.  If both conditions are met, it will stick the access token in the Authorization header automatically.  Otherwise, it won't proceed with the original downstream request until an attempt to get a new access token is complete.  Wristband's Token Endpoint gets called with the Client Credentials grant type to get a new token, and the new token will be saved to local memory cache along with the new expiration time.
+An instance of `WristbandM2MAuthService` is injecteded into the `ProtectedApiClient`, which the Public API uses for making requests to the Protected API.  With each request made to the Protected API, the code logic uses `WristbandM2MAuthService` to get the access from the local memory cache as long as it exists and is not expired.  If both conditions are met, it will stick the access token in the Authorization header automatically.  Otherwise, it won't proceed with the original downstream request until an attempt to get a new access token is complete.  Wristband's Token Endpoint gets called with the Client Credentials grant type to get a new token, and the new token will be saved to local memory cache along with the new expiration time.
+
+## Wristband ASP.NET M2M Auth SDK
+
+This demo app is leveraging the [Wristband aspnet-m2m-auth SDK](https://github.com/wristband-dev/aspnet-m2m-auth) for all authentication interaction in the C# server. Refer to that GitHub repository for more information.
 
 ## Questions
 

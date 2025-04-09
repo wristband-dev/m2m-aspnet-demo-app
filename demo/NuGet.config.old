@@ -1,0 +1,5 @@
+<configuration>
+  <packageSources>
+    <add key="LocalSDK" value="file:///Users/jverducci/dev/code/github/aspnet-m2m-auth/src/bin/Release" />
+  </packageSources>
+</configuration>

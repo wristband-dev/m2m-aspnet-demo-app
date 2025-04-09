@@ -25,10 +25,11 @@ builder.Services.ConfigureHttpJsonOptions(json =>
 // Configure Wristband M2M Auth.
 builder.Services.AddWristbandM2MAuth(options =>
 {
-    options.ApplicationDomain = builder.Configuration["APPLICATION_DOMAIN"];
+    options.WristbandApplicationDomain = builder.Configuration["APPLICATION_DOMAIN"];
     options.ClientId = builder.Configuration["CLIENT_ID"];
     options.ClientSecret = builder.Configuration["CLIENT_SECRET"];
-    options.BackgroundTokenRefreshInterval = TimeSpan.FromMinutes(30);
+    options.BackgroundTokenRefreshInterval = TimeSpan.FromHours(1);
+    options.TokenExpiryBuffer = TimeSpan.FromMinutes(5);
 });
 
 // Configure Wristband JWT validation with JWKS
@@ -59,7 +60,7 @@ app.MapDemoEndpoints();
 try
 {
     // Load the access token into the cache
-    var wristbandM2MAuth = app.Services.GetRequiredService<IWristbandM2MAuth>();
+    var wristbandM2MAuth = app.Services.GetRequiredService<IWristbandM2MAuthService>();
     await wristbandM2MAuth.GetTokenAsync();
 }
 catch (Exception ex)
