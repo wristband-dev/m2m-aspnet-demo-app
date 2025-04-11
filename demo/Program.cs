@@ -35,7 +35,7 @@ builder.Services.AddWristbandM2MAuth(options =>
 // Configure Wristband JWT validation with JWKS
 builder.Services.AddWristbandJwtValidation(options =>
 {
-    options.ApplicationDomain = builder.Configuration["APPLICATION_DOMAIN"];
+    options.WristbandApplicationDomain = builder.Configuration["APPLICATION_DOMAIN"];
 });
 
 // Configure HttpClient for calling the Protected API

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Headers;
+
 using Wristband.AspNet.Auth.M2M;
 
 public class ProtectedApiClient
