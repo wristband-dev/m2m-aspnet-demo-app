@@ -146,6 +146,10 @@ An instance of `WristbandM2MAuthService` is injecteded into the `ProtectedApiCli
 
 This demo app is leveraging the [Wristband aspnet-m2m-auth SDK](https://github.com/wristband-dev/aspnet-m2m-auth) for all authentication interaction in the C# server. Refer to that GitHub repository for more information.
 
+## Wristband ASP.NET JWT SDK
+
+This demo app is leveraging the [Wristband aspnet-jwt SDK](https://github.com/wristband-dev/aspnet-jwt) for validating JWTs on protected APIs. Refer to that GitHub repository for more information.
+
 ## Questions
 
 Reach out to the Wristband team at <support@wristband.dev> for any questions regarding this demo app.

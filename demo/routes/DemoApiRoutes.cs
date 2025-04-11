@@ -1,3 +1,5 @@
+using Wristband.AspNet.Auth.Jwt;
+
 /// <summary>
 /// Defines API route mappings for the demo application.
 /// </summary>
@@ -40,6 +42,6 @@ public static class ApiRoutes
             return Results.Ok("Hello from Protected API!");
         })
         .WithName("GetProtectedData")
-        .RequireAuthorization();
+        .RequireAuthorization(WristbandJwtAuthorization.PolicyName);
     }
 }
