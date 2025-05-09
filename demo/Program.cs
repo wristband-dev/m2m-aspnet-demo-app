@@ -25,7 +25,7 @@ builder.Services.ConfigureHttpJsonOptions(json =>
 // Configure Wristband M2M Auth.
 builder.Services.AddWristbandM2MAuth(options =>
 {
-    options.WristbandApplicationDomain = builder.Configuration["APPLICATION_DOMAIN"];
+    options.WristbandApplicationDomain = builder.Configuration["APPLICATION_VANITY_DOMAIN"];
     options.ClientId = builder.Configuration["CLIENT_ID"];
     options.ClientSecret = builder.Configuration["CLIENT_SECRET"];
     options.BackgroundTokenRefreshInterval = TimeSpan.FromHours(1);
@@ -35,7 +35,7 @@ builder.Services.AddWristbandM2MAuth(options =>
 // Configure Wristband JWT validation with JWKS
 builder.Services.AddWristbandJwtValidation(options =>
 {
-    options.WristbandApplicationDomain = builder.Configuration["APPLICATION_DOMAIN"];
+    options.WristbandApplicationDomain = builder.Configuration["APPLICATION_VANITY_DOMAIN"];
 });
 
 // Configure HttpClient for calling the Protected API

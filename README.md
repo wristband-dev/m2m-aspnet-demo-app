@@ -46,7 +46,6 @@ After your Wristband account is set up, log in to the Wristband dashboard.  Once
 
 - Step 1: Subject to Authenticate - Machines
 - Step 2: Client Framework - ASP.NET / C#
-- Step 3: Domain Format  - Only `Localhost` is supported for M2M demo applications.
 
 You can also follow the [Demo App Guide](https://docs.wristband.dev/docs/setting-up-a-demo-app) for more information.
 
@@ -54,7 +53,7 @@ You can also follow the [Demo App Guide](https://docs.wristband.dev/docs/setting
 
 After completing demo app creation, you will be prompted with values that you should use to create environment variables for the C# server. You should see:
 
-- `APPLICATION_DOMAIN`
+- `APPLICATION_VANITY_DOMAIN`
 - `CLIENT_ID`
 - `CLIENT_SECRET`
 
