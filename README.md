@@ -15,11 +15,11 @@
   </p>
 </div>
 
-<br/>
+<br>
 
 ---
 
-<br/>
+<br>
 
 # Wristband Machine-to-Machine Demo Server (ASP.NET)
 
@@ -28,26 +28,49 @@ This is a C# Server that demonstrates the following:
 - How to protect an API with access tokens
 - How to refresh the access tokens for the M2M OAuth2 client.
 
-<br/>
 <br>
-<hr />
+
+---
+
+## Requirements
+
+This demo app requires .NET SDK 8.0 or higher for the C# server that runs. If you don't have it installed already, you can download and install it from the official .NET website:
+1. Visit [https://dotnet.microsoft.com/download](https://dotnet.microsoft.com/download).
+2. Download and run the latest .NET SDK installer for your operating system.
+3. Verify the installation by opening a terminal or command prompt and running:
+```bash
+dotnet --version # Should show 8.0.x or higher
+```
+
+<br>
+
+---
+
+<br>
 
 ## Getting Started
 
 You can start up the M2M demo application in a few simple steps.
 
+<br>
+
 ### 1) Sign up for a Wristband account.
 
 First, make sure you sign up for a Wristband account at [https://wristband.dev](https://wristband.dev).
 
+<br>
+
 ### 2) Provision the .NET/C# demo application in the Wristband Dashboard.
 
-After your Wristband account is set up, log in to the Wristband dashboard.  Once you land on the home page of the dashboard, click the button labelled "Add Demo App".  Make sure you choose the following options:
+After your Wristband account is set up, log in to the Wristband dashboard.  Once you land on the home page of the dashboard, click the "Add Application" button.  Make sure you choose the following options:
 
-- Step 1: Subject to Authenticate - Machines
-- Step 2: Client Framework - ASP.NET / C#
+- Step 1: Try a Demo
+- Step 2: Subject to Authenticate - Machines
+- Step 3: Client Framework - ASP.NET / C#
 
 You can also follow the [Demo App Guide](https://docs.wristband.dev/docs/setting-up-a-demo-app) for more information.
+
+<br>
 
 ### 3) Apply your Wristband configuration values to the C# server configuration
 
@@ -58,6 +81,8 @@ After completing demo app creation, you will be prompted with values that you sh
 - `CLIENT_SECRET`
 
 Copy those values, then create an environment variable file on the server at: `<project_root_dir>/demo/.env`. Once created, paste the copied values into this file.
+
+<br>
 
 ### 4) Run the application
 
@@ -88,36 +113,19 @@ For development or debugging, you can run the server in watch mode:
 dotnet watch --project ./demo run
 ```
 
-## Demo App Overview
+<br>
 
-Below is a quick overview of this M2M Client demo server and how it interacts with Wristband.
+---
 
-### Entity Model
+<br>
 
-The entity model starts at the top with an application.  The application has one M2M OAuth2 client through which the server will be authenticated.  In this case, the client is a C# server.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-entity-model-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-entity-model-light.png">
-  <img alt="entity model" src="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-entity-model-light.png">
-</picture>
-
-### Architecture
-
-The demo server consists of two REST APIs: one that can be called without the need for an access token, and another that always requires a valid access token in the request headers.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-architecture-dark.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-architecture-light.png">
-  <img alt="entity model" src="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-architecture-light.png">
-</picture>
-
-
-## Demo Server Endpoints
+## How to Interact With The Server
 
 Part of the server-startup process includes making a call to Wristband's Token Endpoint to acquire an access token for this server using the Client Credentials grant type.  It will store the access token and expiration time in a cache.
 
-You will interact with the server by calling the public data API.
+**You will interact with the server by calling the public data API.**
+
+<br>
 
 ### Public Data API
 
@@ -126,6 +134,8 @@ You will interact with the server by calling the public data API.
 This is the endpoint you can hit from any command line or API testing tool (cURL, Postman, etc.) without passing any access token.  When a request is sent to this API, the API will turn around and make an API call to the protected data API with the access token that was acquired during server startup.  This is to simulate something akin to a microservices environment where an upstream service would be responsible for sending an acess token with every downstream request. The expected response output of this API is:
 
 `"Public API called Protected API and received: \"Hello from Protected API!\""`
+
+<br>
 
 ### Protected Data API
 
@@ -137,17 +147,63 @@ This endpoint is the downstream API called by the public data API, and it cannot
 - The issuer matches your Wristband application domain.
 - The RS256 algorithm is specified.
 
-## Getting New Access Tokens
+<br>
+
+---
+
+<br>
+
+## Demo App Overview
+
+Below is a quick overview of this M2M Client demo server and how it interacts with Wristband.
+
+<br>
+
+### Entity Model
+
+The entity model starts at the top with an application.  The application has one M2M OAuth2 client through which the server will be authenticated.  In this case, the client is a C# server.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-entity-model-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-entity-model-light.png">
+  <img alt="entity model" src="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-entity-model-light.png">
+</picture>
+
+<br>
+
+### Architecture
+
+The demo server consists of two REST APIs: one that can be called without the need for an access token, and another that always requires a valid access token in the request headers.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-architecture-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-architecture-light.png">
+  <img alt="entity model" src="https://assets.wristband.dev/docs/GitHub+READMEs/m2m-demo-app/common/m2m-demo-app-architecture-light.png">
+</picture>
+
+<br>
+
+### Getting New Access Tokens
 
 An instance of `WristbandM2MAuthService` is injecteded into the `ProtectedApiClient`, which the Public API uses for making requests to the Protected API.  With each request made to the Protected API, the code logic uses `WristbandM2MAuthService` to get the access from the local memory cache as long as it exists and is not expired.  If both conditions are met, it will stick the access token in the Authorization header automatically.  Otherwise, it won't proceed with the original downstream request until an attempt to get a new access token is complete.  Wristband's Token Endpoint gets called with the Client Credentials grant type to get a new token, and the new token will be saved to local memory cache along with the new expiration time.
+
+<br>
+
+---
+
+<br>
 
 ## Wristband ASP.NET M2M Auth SDK
 
 This demo app is leveraging the [Wristband aspnet-m2m-auth SDK](https://github.com/wristband-dev/aspnet-m2m-auth) for all authentication interaction in the C# server. Refer to that GitHub repository for more information.
 
+<br>
+
 ## Wristband ASP.NET JWT SDK
 
 This demo app is leveraging the [Wristband aspnet-jwt SDK](https://github.com/wristband-dev/aspnet-jwt) for validating JWTs on protected APIs. Refer to that GitHub repository for more information.
+
+<br>
 
 ## Questions
 
