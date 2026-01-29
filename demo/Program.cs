@@ -3,6 +3,10 @@ using DotNetEnv;
 using Wristband.AspNet.Auth.Jwt;
 using Wristband.AspNet.Auth.M2M;
 
+// -----------------------------------------------------------------------------
+// Environment & configuration
+// -----------------------------------------------------------------------------
+
 // Load environment variables from .env file
 Env.Load();
 
@@ -13,6 +17,10 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
+// -----------------------------------------------------------------------------
+// Core infrastructure services
+// -----------------------------------------------------------------------------
+
 // HTTP Context Configuration
 builder.Services.AddHttpContextAccessor();
 
@@ -21,6 +29,10 @@ builder.Services.ConfigureHttpJsonOptions(json =>
 {
   json.SerializerOptions.WriteIndented = true;
 });
+
+// -----------------------------------------------------------------------------
+// Authentication & authorization
+// -----------------------------------------------------------------------------
 
 // Configure Wristband M2M Auth.
 builder.Services.AddWristbandM2MAuth(options =>
@@ -32,34 +44,55 @@ builder.Services.AddWristbandM2MAuth(options =>
     options.TokenExpiryBuffer = TimeSpan.FromMinutes(5);
 });
 
-// Configure Wristband JWT validation with JWKS
-builder.Services.AddWristbandJwtValidation(options =>
-{
-    options.WristbandApplicationDomain = builder.Configuration["APPLICATION_VANITY_DOMAIN"];
-});
+// Register JWT Bearer authentication with Wristband JWKS validation
+builder.Services.AddAuthentication()
+    .AddJwtBearer(options => options.UseWristbandJwksValidation(
+        wristbandApplicationVanityDomain: builder.Configuration["APPLICATION_VANITY_DOMAIN"]!
+    ));
+
+// Configure authorization and register the WristbandJwt policy
+builder.Services.AddAuthorization(options => options.AddWristbandJwtPolicy());
+
+// -----------------------------------------------------------------------------
+// HTTP clients & app services
+// -----------------------------------------------------------------------------
 
 // Configure HttpClient for calling the Protected API
 builder.Services.AddHttpClient<ProtectedApiClient>();
 
-// Configure authorization to allow usage of RequiresAuthorization() on endpoints.
-builder.Services.AddAuthorization();
+// -----------------------------------------------------------------------------
+// Host configuration
+// -----------------------------------------------------------------------------
 
-// Configure to always listen on localhost
+// Listen on localhost port 6001
 builder.WebHost.UseUrls("http://localhost:6001");
+
+// -----------------------------------------------------------------------------
+// Build application
+// -----------------------------------------------------------------------------
 
 var app = builder.Build();
 
-// Add authentication and authorization middleware
+// -----------------------------------------------------------------------------
+// Middleware pipeline
+// -----------------------------------------------------------------------------
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map the Demo API endpoints
+// -----------------------------------------------------------------------------
+// Endpoints
+// -----------------------------------------------------------------------------
+
 app.MapDemoEndpoints();
 
-// Initialize the Wristband client to get the initial token during startup
+// -----------------------------------------------------------------------------
+// Startup warmup
+// -----------------------------------------------------------------------------
+
 try
 {
-    // Load the access token into the cache
+    // Initialize the Wristband client to get and cache the initial token during startup
     var wristbandM2MAuth = app.Services.GetRequiredService<IWristbandM2MAuthService>();
     await wristbandM2MAuth.GetTokenAsync();
 }
@@ -67,5 +100,9 @@ catch (Exception ex)
 {
     Console.WriteLine("[M2M AUTH] Failed to retrieve initial M2M token: " + ex);
 }
+
+// -----------------------------------------------------------------------------
+// Run
+// -----------------------------------------------------------------------------
 
 app.Run();

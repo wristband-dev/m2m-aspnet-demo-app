@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using Wristband.AspNet.Auth.Jwt;
 
 /// <summary>
@@ -22,7 +24,15 @@ public static class ApiRoutes
             try
             {
                 var response = await apiClient.GetProtectedDataAsync();
-                return Results.Ok($"Public API called Protected API and received: {response}");
+
+                // Deserialize string JSON to an object
+                var protectedObj = JsonSerializer.Deserialize<object>(response);
+
+                return Results.Ok(new
+                {
+                    message = "Public API called Protected API successfully!",
+                    protectedResponse = protectedObj,
+                });
             }
             catch (Exception ex)
             {
@@ -39,9 +49,14 @@ public static class ApiRoutes
         /// <returns>A success response indicating access to the protected API.</returns>
         routes.MapGet("/api/protected/data", (HttpContext context) =>
         {
-            return Results.Ok("Hello from Protected API!");
+            return Results.Ok(new
+            {
+                jwt = context.GetJwt(),
+                payload = context.GetJwtPayload()
+            });
+
         })
         .WithName("GetProtectedData")
-        .RequireAuthorization(WristbandJwtAuthorization.PolicyName);
+        .RequireWristbandJwt();
     }
 }
